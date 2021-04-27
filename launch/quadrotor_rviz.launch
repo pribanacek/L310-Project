@@ -1,0 +1,27 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="$(find hector_quadrotor_description)/urdf/quadrotor_hokuyo_utm30lx.gazebo.xacro"/>
+  <arg name="slam_methods" default="gmapping" doc="slam type [gmapping]"/>
+  <arg name="configuration_basename" default="turtlebot3_lds_2d.lua"/>
+  <arg name="set_base_frame" default="base_footprint"/>
+  <arg name="set_odom_frame" default="odom"/>
+  <arg name="set_map_frame"  default="map"/>
+  <arg name="open_rviz" default="true"/>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" value=""/>
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="pc_transform" args="0 0 0 0 0 0 /base_link point_cloud_frame 0" />
+  <node pkg="tf" type="static_transform_publisher" name="map_transform" args="0 0 0 0 0 0 /base_link map 0" />
+  
+  <!-- <node pkg="vigir_point_cloud_proc" type="cloud_to_mesh_node" name="mesh_constructor">
+    <remap from="~/cloud" to="/object_point_cloud" />
+  </node> -->
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find exercises)/project/launch/visualisation.rviz"/>
+  </group>
+</launch>

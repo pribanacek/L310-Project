@@ -1,0 +1,3 @@
+<launch>
+	<node pkg="exercises" type="mapping.py" name="mapping" output="screen"></node>
+</launch>
